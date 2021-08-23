@@ -7,11 +7,18 @@ UTF8 = 'utf-8'
 RESULTADO = 'res.txt'
 COLUNAS_POR_LINHA = 4 # largura do teclado de entrada
 
-import bac, tkinter, time, random
+try:
+	import bac, tkinter, time, random
+except ModuleNotFoundError as modnot:
+	print("É preciso ter as bibliotecas 'tkinter', 'time' e 'random' instaladas.\nO programa também deve ter acesso ao módulo 'bac' (deixe-o na mesma pasta que 'lab')")	
+	raise modnot
+
+
 
 class programa:
 
 	def mainloop (self):
+		print('Iniciando a interface gráfica\n')
 		return self.principal.mainloop()
 
 	def destroy (self):	
@@ -23,7 +30,7 @@ class programa:
 	def title (self, nome):
 		return self.principal.title(nome)	
 
-	def limpar (self, recado = bac.SEPARADOR_COL, aviso = 'Limpando...'):
+	def limpar (self, recado = bac.SEPARADOR_COL, aviso = 'Limpando os resultados...'):
 		print(aviso)	
 		self.janela.resultados.nome.config(text=aviso)		
 		for res in self.janela.resultados.possibilidades:
@@ -57,6 +64,7 @@ class programa:
 				q = tkinter.Frame(p)
 				q.pack(fill=tkinter.X)
 				tkinter.Button(q, text='Salvar dados [%d]' %len(self.possibilidades),command=lambda b=pt[0],r=pt[1],t=self.testes,s = '%d-%d-%d_%d-%d-%d[%d].TXT' %(*time.localtime()[:6],len(self.possibilidades)):print('salvando',s,registrar_tabela(b,t,r,s))).pack(side=tkinter.LEFT)
+				tkinter.Button(q, text='[excluir]',command=lambda f = p.pack_forget: f()).pack(side=tkinter.RIGHT)
 
 				tabelar(pt[1],q)
 				listar(pt[0],p)
@@ -128,11 +136,11 @@ class programa:
 		self.janela.tabela.retorno =	tkinter.Label(self.janela.tabela,text='\n\tIniciando....')
 		self.janela.tabela.retorno.pack(side=tkinter.BOTTOM)
 
-		self.janela.tabela.entrada =	tkinter.Frame(self.janela.tabela, background='blue')		
+		self.janela.tabela.entrada =	tkinter.Frame(self.janela.tabela)		
 		self.janela.tabela.caminho =	tkinter.Entry(self.janela.tabela.entrada)
 		self.janela.tabela.confirmar =	tkinter.Button(self.janela.tabela.entrada, text = 'Extrair dados / recarregar botões', command = self.ler_tabela) 
 		self.janela.tabela.confirmar.pack(side=tkinter.RIGHT)		
-		self.janela.tabela.caminho.pack(fill=tkinter.X,side=tkinter.LEFT,expand=True)
+		self.janela.tabela.caminho.pack(fill=tkinter.BOTH,side=tkinter.LEFT,expand=True)
 		self.janela.tabela.entrada.pack(fill=tkinter.X)
 		self.janela.tabela.caminho.insert(0,self.arquivo)
 
@@ -152,18 +160,24 @@ class programa:
 			elif type(self.testes) != list:
 				self.janela.tabela.retorno.config(text='Problema na obtenção dos testes.')
 			else:	
-				self.janela.tabela.retorno.config(text=self.arquivo + ' lido com sucesso')
-		#	print(self.testes)	
-		#	print(self.probabilidades)	
+				self.janela.tabela.retorno.config(text=self.arquivo + ' lido com sucesso')			
 			self.inicializar_entradas()
 			self.preencher_entradas()
-
+			print('Testes:',bac.SEPARADOR_COL,self.testes)	
+			print('\nPossibilidades:',bac.SEPARADOR_COL,self.probabilidades)				
+			registrar_parcial(self.probabilidades,self.testes)
+			print(bac.SEPARADOR_COL,'registrados em',repr(PARCIAL))
+			return 
 
 			
 		except FileNotFoundError:	
 			self.janela.tabela.retorno.config(text='Arquivo ' + self.arquivo.__repr__() + ' não encontrado!')
+			print(repr(self.arquivo),'não foi encontrado. \nEle está na pasta correta? \nO nome de e o caminho até o arquivo estão escritos corretamente?')
 		except: 	
+			print('Os dados em',repr(self.arquivo),'não foram corretamente interpretados.')
 			self.janela.tabela.retorno.config(text='Não foi possível extrair de ' + self.arquivo.__repr__())
+		print('Verifique se o arquivo inserido está correto. ')	
+			
 
 	def inicializar_entradas (self): 		
 
@@ -226,12 +240,12 @@ def teste (nome, botao):
 	t = i = 'ignorar'	
 	botao.resultado = lambda res, n = nome: print(n,bac.SEPARADOR_COL,'não será considerado.')
 	botao.estados = {t:({'background':'white'}, botao.resultado)}
-	
+	troca = lambda prox,b:	(b.__setattr__('resultado',b.estados[prox][1]),b.config(**b.estados[prox][0],text=prox))
 	for r, s, c in RES:
 		botao.estados[s] = {'background':c, 
-		'command':lambda prox=t,b=botao:(b.__setattr__('resultado',b.estados[prox][1]),b.config(text=prox,**b.estados[prox][0]))}, lambda resultados,r = r, n = nome: resultados.__setitem__(n,r)
+		'command':lambda oq=botao,para=t:troca(para,oq)}, lambda resultados,r = r, n = nome: resultados.__setitem__(n,r)
 		t = s
-	botao.estados[i][0]['command'] = lambda prox=t,b=botao:	print(b.__setattr__('resultado',b.estados[prox][1]),'para',prox,b.config(**b.estados[prox][0],text=prox))
+	botao.estados[i][0]['command'] = lambda to=t,obj=botao: troca(to,obj)
 	botao.config(**botao.estados[i][0],text=i)
 
 def listar (bact, mestre, sep = ' %s ' %bac.SEPARADOR_COL, fim = '%'):
@@ -245,10 +259,13 @@ def listar (bact, mestre, sep = ' %s ' %bac.SEPARADOR_COL, fim = '%'):
 	caixa.lista.config(yscrollcommand = caixa.barra_y.set, xscrollcommand=caixa.barra_x.set)	
 	caixa.lista.pack(side=tkinter.RIGHT)
 
+	
 	largura = 22
 	for b in bact:
+		positivo = None
 		try:
 			s = '%.1f%s' %(b.resultado,fim)
+			positivo = b.resultado > 0
 		except TypeError:								
 			try:	
 			#	print(b.resultado,'não é um número')
@@ -256,6 +273,8 @@ def listar (bact, mestre, sep = ' %s ' %bac.SEPARADOR_COL, fim = '%'):
 				for c in b.resultado:
 					s += '%s%.2f%s' %(t,c,fim)
 					t = bac.SEPARADOR_VAL
+					if c > 0:					
+						positivo = True
 			except TypeError:		
 				s = bac.VARIA
 
@@ -264,6 +283,8 @@ def listar (bact, mestre, sep = ' %s ' %bac.SEPARADOR_COL, fim = '%'):
 			largura = len(s)
 
 		caixa.lista.insert(tkinter.END, s)
+		if positivo:
+			caixa.lista.itemconfig(caixa.lista.size() - 1,bg='PowderBlue')
 		if largura > 125:
 			largura = 144
 	caixa.lista.config(width=largura)	
@@ -374,12 +395,12 @@ def registrar_tabela (bact,testes = None,resultados = None, arq = RESULTADO, tri
 
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':	
 
 	programa().mainloop()		
 	
-	registrar_tabela(*ler_tabela())
-	registrar_parcial(*ler_tabela())
+#	registrar_tabela(*ler_tabela())
+#	registrar_parcial(*ler_tabela())
 	
 
 	

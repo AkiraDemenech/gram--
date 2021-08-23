@@ -248,18 +248,9 @@ def tabela (bact, testes = None, col_sep = None, ln_sep = '\n', var = VARIA):
 		if col_sep == None:
 			col_sep = bact.sep
 		if testes == None:	
-			testes = bact.keys()		 	
-		temp = bact.resultado != None			
-		if hasattr(temp,'__len__') or temp:
-			if hasattr(temp,'__len__'): 
-				sep = ''
-				for temp in bact.resultado:
-					b += '%s%.3f' %(sep,temp)
-					sep = SEPARADOR_VAL					
-			else:			 	
-				b = '%.3f' % bact.resultado
-				
-			b += '%s%d%s0%02d%s'%(col_sep,len(bact),col_sep,bact.zeros,col_sep)			
+			testes = bact.keys()		 				
+		if hasattr(bact.resultado,'__len__') or bact.resultado != None:			 	
+			b = '%s%s%d%s0%02d%s'%(str(bact.resultado),col_sep,len(bact),col_sep,bact.zeros,col_sep)			
 		b += bact.nome
 		for t in testes:
 			b += col_sep
