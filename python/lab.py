@@ -7,7 +7,7 @@ UTF8 = 'utf-8'
 RESULTADO = 'res.txt'
 COLUNAS_POR_LINHA = 4 # largura do teclado de entrada
 
-import bac, tkinter, time, threading
+import bac, tkinter, time, random
 
 class programa:
 
@@ -45,21 +45,28 @@ class programa:
 		p.pack(side=tkinter.BOTTOM, fill=tkinter.X)
 		self.janela.resultados.possibilidades.append(p)
 
-		for pt in bac.testar(self.entradas(),self.probabilidades):
+		try:
+			for pt in bac.testar(self.entradas(),self.probabilidades):
 			
-			p = tkinter.Frame(self.janela.resultados)
-			p.pack(fill=tkinter.X)
-						
-			self.possibilidades.append(pt)
-			self.janela.resultados.possibilidades.append(p)						
+				p = tkinter.Frame(self.janela.resultados)
+				p.pack(fill=tkinter.X, padx=14, pady=6)
+							
+				self.possibilidades.append(pt)
+				self.janela.resultados.possibilidades.append(p)						
 
-			tabelar(pt[1],p,len(self.possibilidades))
-			listar(pt[0],p)
+				q = tkinter.Frame(p)
+				q.pack(fill=tkinter.X)
+				tkinter.Button(q, text='Salvar dados [%d]' %len(self.possibilidades),command=lambda b=pt[0],r=pt[1],t=self.testes,s = '%d-%d-%d_%d-%d-%d[%d].TXT' %(*time.localtime()[:6],len(self.possibilidades)):print('salvando',s,registrar_tabela(b,t,r,s))).pack(side=tkinter.LEFT)
 
-		self.janela.resultados.nome.config(text='%d RESULTADO%s:' %(len(self.possibilidades),'S'*(len(self.possibilidades) != 1)))	
-		p = tkinter.Label(self.janela.resultados, text='Fim dos resultados :)')
-		self.janela.resultados.possibilidades.append(p)
-		p.pack(pady=12)
+				tabelar(pt[1],q)
+				listar(pt[0],p)
+		except NameError as n:	
+			tkinter.Label(self.janela, text = 'Não foi possível calcular. \nProblema interno grave: %s\nVerifique a instalação da biblioteca NumPy' %(bac.SEPARADOR_COL + str(n))).pack()			
+		else:	
+			self.janela.resultados.nome.config(text='%d RESULTADO%s:' %(len(self.possibilidades),'S'*(len(self.possibilidades) != 1)))	
+			p = tkinter.Label(self.janela.resultados, text='%sim dos resultados %s :~)' %(['Upa, parece que nos encontramos no f','F'][random.random() > .5],bac.SEPARADOR_COL))
+			self.janela.resultados.possibilidades.append(p)
+			p.pack(pady=12)
 		
 		self.principal.tela.refresh()
 
@@ -96,12 +103,14 @@ class programa:
 
 	def inicializar_tela (self):
 		# criando a tela e a barra de rolagem
-		self.principal.tela = tkinter.Canvas(self.principal, background='green')
+		self.principal.tela = tkinter.Canvas(self.principal, background='aquamarine')
 		self.principal.tela.barra = tkinter.Scrollbar(self.principal,command=self.principal.tela.yview)
 		self.principal.tela.barra.pack(side=tkinter.RIGHT,fill=tkinter.Y)
+		self.principal.tela.baixo = tkinter.Scrollbar(self.principal,command=self.principal.tela.xview,orient=tkinter.HORIZONTAL)
+		self.principal.tela.baixo.pack(side=tkinter.BOTTOM,fill=tkinter.X)
 		self.principal.tela.pack(fill=tkinter.BOTH,expand=True)
-		self.principal.tela.config(yscrollcommand=self.principal.tela.barra.set)
-		self.principal.tela.refresh = lambda event = None: print(event,self.principal.tela.update(),self.principal.tela.configure(scrollregion=self.principal.tela.bbox(tkinter.ALL)))
+		self.principal.tela.config(yscrollcommand=self.principal.tela.barra.set, xscrollcommand=self.principal.tela.baixo.set)
+		self.principal.tela.refresh = lambda event = None: (event,self.principal.tela.update(),self.principal.tela.configure(scrollregion=self.principal.tela.bbox(tkinter.ALL)))
 		self.principal.tela.bind('<Configure>',self.principal.tela.refresh)
 		
 
@@ -121,7 +130,7 @@ class programa:
 
 		self.janela.tabela.entrada =	tkinter.Frame(self.janela.tabela, background='blue')		
 		self.janela.tabela.caminho =	tkinter.Entry(self.janela.tabela.entrada)
-		self.janela.tabela.confirmar =	tkinter.Button(self.janela.tabela.entrada, text = 'Extrair dados', command = self.ler_tabela) 
+		self.janela.tabela.confirmar =	tkinter.Button(self.janela.tabela.entrada, text = 'Extrair dados / recarregar botões', command = self.ler_tabela) 
 		self.janela.tabela.confirmar.pack(side=tkinter.RIGHT)		
 		self.janela.tabela.caminho.pack(fill=tkinter.X,side=tkinter.LEFT,expand=True)
 		self.janela.tabela.entrada.pack(fill=tkinter.X)
@@ -201,7 +210,7 @@ class programa:
 			self.janela.entradas.testes[t].nome = tkinter.Label(self.janela.entradas.testes[t],text=t)			
 			self.janela.entradas.testes[t].nome.pack()
 			self.janela.entradas.testes[t].botao.pack()		
-			self.janela.entradas.testes[t].pack(side=tkinter.LEFT,padx=5,pady=10,ipady=2,ipadx=4)
+			self.janela.entradas.testes[t].pack(side=tkinter.LEFT,fill=tkinter.BOTH,expand=True,padx=5,pady=10,ipady=2,ipadx=4)
 
 			teste(t,self.janela.entradas.testes[t].botao)
 
@@ -209,7 +218,9 @@ class programa:
 		self.principal.tela.refresh()	
 			
 		
-RES = ((True,'POSITIVO (+)','green'),(False,'NEGATIVO (-)','red'),(None,'Incerto +/-','yellow'))
+SINAIS = ('(-)','(+)')		
+REPRESENTE = {None: bac.VARIA, False: 'NEGATIVO ', True: 'POSITIVO '}
+RES = ((True,REPRESENTE[1] + SINAIS[1],'mediumaquamarine'),(False,REPRESENTE[0] + SINAIS[0],'tomato'),(None,'Incerto +/-','yellow'))
 		
 def teste (nome, botao): 			
 	t = i = 'ignorar'	
@@ -220,19 +231,19 @@ def teste (nome, botao):
 		botao.estados[s] = {'background':c, 
 		'command':lambda prox=t,b=botao:(b.__setattr__('resultado',b.estados[prox][1]),b.config(text=prox,**b.estados[prox][0]))}, lambda resultados,r = r, n = nome: resultados.__setitem__(n,r)
 		t = s
-	botao.estados[i][0]['command'] = lambda prox=t,b=botao:	print(b.__setattr__('resultado',b.estados[prox][1]),b.config(**b.estados[prox][0],text=prox))
+	botao.estados[i][0]['command'] = lambda prox=t,b=botao:	print(b.__setattr__('resultado',b.estados[prox][1]),'para',prox,b.config(**b.estados[prox][0],text=prox))
 	botao.config(**botao.estados[i][0],text=i)
 
 def listar (bact, mestre, sep = ' %s ' %bac.SEPARADOR_COL, fim = '%'):
 	caixa = tkinter.Frame(mestre)
-	caixa.pack(fill=tkinter.BOTH)	
+	caixa.pack()	
 	caixa.lista =	 tkinter.Listbox(caixa)
 	caixa.barra_y =	 tkinter.Scrollbar(caixa, command = caixa.lista.yview)	
-	caixa.barra_y.pack(fill=tkinter.Y, side=tkinter.RIGHT)
+	caixa.barra_y.pack(fill=tkinter.Y, side=tkinter.LEFT)
 	caixa.barra_x =	 tkinter.Scrollbar(caixa, command = caixa.lista.xview, orient = tkinter.HORIZONTAL)	
 	caixa.barra_x.pack(fill=tkinter.X, side=tkinter.BOTTOM)
 	caixa.lista.config(yscrollcommand = caixa.barra_y.set, xscrollcommand=caixa.barra_x.set)	
-	caixa.lista.pack(fill=tkinter.BOTH, side=tkinter.LEFT)
+	caixa.lista.pack(side=tkinter.RIGHT)
 
 	largura = 22
 	for b in bact:
@@ -253,23 +264,25 @@ def listar (bact, mestre, sep = ' %s ' %bac.SEPARADOR_COL, fim = '%'):
 			largura = len(s)
 
 		caixa.lista.insert(tkinter.END, s)
+		if largura > 125:
+			largura = 144
 	caixa.lista.config(width=largura)	
 
 	return caixa
 
-def tabelar (testes, mestre, id = -1, sinais = ('(-)','(+)'), largura = COLUNAS_POR_LINHA, val_sep = bac.SEPARADOR_VAL, ln_sep = '\n'):	
+def tabelar (testes, mestre, sinais = SINAIS, largura = COLUNAS_POR_LINHA, val_sep = bac.SEPARADOR_VAL, ln_sep = '\n'):	
 	texto = sep = ''
 	c = 0
 	for t in testes:
 		try:
 			texto += sep + t + sinais[testes[t]]
-			sep = val_sep# + (ln_sep * (c % largura == 0))
+			sep = val_sep + (ln_sep * (c % largura == 0))
 			c += 1
-			if c % largura == 0:
-				sep += ln_sep  
+		#	if c % largura == 0:
+		#		sep += ln_sep  
 		except IndexError:
 			continue	
-	tkinter.Label(mestre,text='[%d] para %d teste%s: %s' %(id,c,'s'*(c!=1),texto)).pack()	
+	tkinter.Label(mestre,justify=tkinter.LEFT,text='para %d teste%s: %s' %(c,'s'*(c!=1),texto)).pack(fill=tkinter.X)	
 
 
 			
@@ -333,7 +346,7 @@ def ler_tabela (arq = PROBABILIDADES):
 		arq.close()
 	return r
 
-def registrar_tabela (bact,testes = None,resultados = None,separador = bac.SEPARADOR_COL,arq = RESULTADO):	 
+def registrar_tabela (bact,testes = None,resultados = None, arq = RESULTADO, trio = REPRESENTE, sinalizar = SINAIS, separador = bac.SEPARADOR_COL):	 
 	registro = arq
 	if type(arq) == str:
 		arq = open(arq,'w',encoding=UTF8)	
@@ -343,11 +356,14 @@ def registrar_tabela (bact,testes = None,resultados = None,separador = bac.SEPAR
 
 	if testes != None:
 		for t in testes:
-			print(t,end=separador,file=arq)
+			s = separador
+			if sinalizar != None and resultados != None and resultados.get(t) != None:				
+				s = ' ' + sinalizar[resultados.get(t)] + s
+			print(t,end=s,file=arq)			
 		if resultados != None:
 			print('\n',end=margem,file=arq)	
 			for t in testes:	
-				print(resultados.get(t),end=separador,file=arq)				
+				print(trio[resultados.get(t)],end=separador,file=arq)				
 		print(file=arq)			
 	print(bac.tabela(bact,testes,separador),file=arq)		
 			

@@ -1,7 +1,11 @@
 
 
+try:
+	from numpy import array
+except ModuleNotFoundError:	
+	if input("Não foi possível importar o módulo numpy. Reabra o programa depois de o instalar. \nComando: 'pip install numpy'\nhttps://pypi.org/project/numpy/\n\nVocê gostaria de continuar mesmo assim? (s/n)\t").strip()[0].lower() == 'n':
+		exit()
 
-from numpy import array, ndarray
 
 PORCENTAGEM_MAX	= 100
 SEPARADOR_COL	= '\t'
