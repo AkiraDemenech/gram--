@@ -1,0 +1,38 @@
+	Indol	Citr	H2S	Uréia	Fenil	Lisina	Argin	Ornit	Motil	Gelatina	Malon	Gás glicose	Lactose	Sacarose	Escul	DNase
+Citrobacter freundi	33	78	78	44	0	0	67	0	89	0	11	89	78	89	0	0
+Citrobacter diversus (kosen)	99	99	0	75	0	0	80	99	95	0	95	98	50	40	1	0
+Citrobacter amalonaticus	100	95	5	85	0	0	85	95	95	0	1	97	35	9	5	0
+Edwardsiella tarda	99	1	100	0	0	100	0	100	98	0	0	100	0	0	0	0
+Enterobacter aerogenes	0	95	0	2	0	98	0	98	97	0	95	100	95	100	98	0
+Enterobacter cloacae	0	100	0	65	0	0	97	96	95	0	75	100	93	97	30	0
+Enterobacter agglomerans	20	50	0	20	20	0	0	0	85	2	65	20	40	75	60	0
+Enterobacter gergoviae	0	99	0	93	0	90	0	100	90	0	96	98	55	98	97	0
+Enterobacter sakazakii	11	99	0	1	50	0	99	91	96	0	16	98	99	100	100	0
+Eschenchia coli	98	1	1	1	0	90	17	65	95	0	0	95	95	50	35	0
+Eschenchia coli inativa	98	1	1	1	0	90	17	65	95	0	0	5	25	15	5	0
+Shigella dysenteriae	45	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0
+Shigella flexneri	50	0	0	0	0	0	5	0	0	0	0	3	1	1	0	0
+Shigella boydii	25	0	0	0	0	0	18	2	0	0	0	0	1	0	0	0
+Shigella sonnei	0	0	0	0	0	0	2	98	0	0	0	0	2	1	0	0
+Hafnia alvei	0	10	0	4	0	100	6	98	85	0	50	98	5	10	7	0
+Klebsiella pneumoniae	0	98	0	95	0	98	0	0	0	0	93	97	98	99	99	0
+Klebsiella oxytoca	99	95	0	90	1	99	0	0	0	0	98	97	100	100	100	0
+Klebsiella ozaenae	0	30	0	10	0	40	6	3	0	0	3	50	30	20	80	0
+Klebsiella rhinoscleromatis	0	0	0	0	0	0	0	0	0	0	95	0	0	75	30	0
+Morganelle morganii	95	0	20	95	95	v	0	95	v	0	1	90	1	0	0	0
+Proteus mirabilis	2	65	98	98	98	0	0	99	95	90	2	96	2	15	0	50
+Proteus vulgaris	98	15	95	95	99	0	0	0	95	91	0	85	2	97	50	80
+Providencia rettgeri	99	95	0	98	98	0	0	0	94	0	0	10	5	15	35	0
+Providencia stuartii	98	93	0	30	95	0	0	0	85	0	0	0	2	50	0	10
+Providencia alcalifaciens	99	98	0	0	98	0	0	0	96	0	0	85	0	15	0	0
+Salmonella spp.	1	95	95	1	0	98	70	97	95	0	0	96	1	1	5	2
+Salmonella typhi	0	0	97	0	0	98	3	0	97	0	0	0	1	0	0	0
+Salmonella cholerasuis	0	25	50	0	0	95	55	100	95	0	0	95	0	0	0	0
+Salmonella paratyphi A	0	0	10	0	0	0	15	95	95	0	0	99	0	0	0	0
+Salmonella gallinarum	0	0	100	0	0	90	10	1	0	0	0	0	0	0	0	10
+Salmonella pullorum	0	0	90	0	0	100	10	95	0	0	0	90	0	0	0	0
+Salmonella outras	1	90	100	0	0	99	70	99	99	1	v	100	v	1	0,15	1
+Serratia marcescens	1	98	0	15	0	99	0	99	97	90	3	55	2	99	95	98
+Serratia liquefaciens	1	90	0	3	0	95	0	95	95	90	2	75	10	98	97	85
+Serratia rubidae	0	95	0	2	0	55	0	0	85	90	94	30	100	99	94	99
+Yersinia enterocolitica	50	0	0	75	0	0	0	95	2	0	0	5	5	95	25	5
