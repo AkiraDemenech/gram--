@@ -224,7 +224,7 @@ RES = ((True,REPRESENTE[1] + SINAIS[1],'mediumaquamarine'),(False,REPRESENTE[0] 
 		
 def teste (nome, botao): 			
 	t = i = 'ignorar'	
-	botao.resultado = lambda res, n = nome: print(n,'não será considerado.')
+	botao.resultado = lambda res, n = nome: print(n,bac.SEPARADOR_COL,'não será considerado.')
 	botao.estados = {t:({'background':'white'}, botao.resultado)}
 	
 	for r, s, c in RES:
@@ -351,7 +351,7 @@ def registrar_tabela (bact,testes = None,resultados = None, arq = RESULTADO, tri
 	if type(arq) == str:
 		arq = open(arq,'w',encoding=UTF8)	
 
-	margem = separador * (1 + (2*(resultados != None))) 
+	margem = separador * (1 + (3*(resultados != None))) 
 	print(file=arq,end=margem)
 
 	if testes != None:

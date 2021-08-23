@@ -26,6 +26,7 @@ class bacteria:
 		self.sep =	col_sep
 
 		self.resultado = None	
+		self.zeros = 0
 
 	def __str__ (self):#, labels = None, separator = None):
 		'''if labels == None:
@@ -47,11 +48,14 @@ class bacteria:
 			if hasattr(o,'__len__'):
 				o = o[len(o)-1]	
 			if o == s:				
-				if len(outra) > self.__len__():	
-					return True
-				if len(outra) < self.__len__():	
-					return False
-				outra = outra.nome	
+				if self.zeros == outra.zeros:	
+					if len(outra) > self.__len__():	
+						return True
+					if len(outra) < self.__len__():	
+						return False				
+					outra = outra.nome	
+				else:	
+					return self.zeros > outra.zeros
 			elif o == None:
 				return False
 			else:					
@@ -72,11 +76,14 @@ class bacteria:
 			if hasattr(o,'__len__'): 
 				o = o[len(o) - 1]											
 			if o == s:				
-				if len(outra) < self.__len__():	
-					return True
-				if len(outra) > self.__len__():	
-					return False
-				outra = outra.nome	
+				if self.zeros == outra.zeros:	
+					if len(outra) < self.__len__():	
+						return True
+					if len(outra) > self.__len__():	
+						return False					
+					outra = outra.nome
+				else:
+					return outra.zeros > self.zeros
 			elif o == None:
 				return True
 			else:					
@@ -156,6 +163,7 @@ class bacteria:
 	
 	def testar (self, resultados, p = 1):					
 		r = {}
+		z = 0
 		if p == None:
 			p = self.max
 		for t in self.probabilidades:							
@@ -172,6 +180,15 @@ class bacteria:
 							r[t] = self.max - array(self.probabilidades[t])							
 							r[t].sort()
 							p.sort()
+					b = self[t] == (not resultados[t])
+					if hasattr(b,'__getitem__'):
+						for a in b:
+							z += a
+					#	b = b.any()
+					else:
+						z += b	
+
+
 
 							
 			except TypeError:							
@@ -191,6 +208,7 @@ class bacteria:
 		r = bacteria(self.nome,r,self.max,self.sep)
 	#	r.testes = len(r.probabilidades)
 		r.resultado = p
+		r.zeros = z
 		
 
 		return r	
@@ -230,24 +248,32 @@ def tabela (bact, testes = None, col_sep = None, ln_sep = '\n', var = VARIA):
 		if col_sep == None:
 			col_sep = bact.sep
 		if testes == None:	
-			testes = bact.keys()
-		if bact.resultado != None:
-			b = '%.3f%s%d%s'%(bact.resultado,col_sep,len(bact),col_sep)
+			testes = bact.keys()		 	
+		temp = bact.resultado != None			
+		if hasattr(temp,'__len__') or temp:
+			if hasattr(temp,'__len__'): 
+				sep = ''
+				for temp in bact.resultado:
+					b += '%s%.3f' %(sep,temp)
+					sep = SEPARADOR_VAL					
+			else:			 	
+				b = '%.3f' % bact.resultado
+				
+			b += '%s%d%s0%02d%s'%(col_sep,len(bact),col_sep,bact.zeros,col_sep)			
 		b += bact.nome
 		for t in testes:
 			b += col_sep
 			p = bact.get(t)
-			if p == None:
-				b += var				
-			else:	
-				try:
+			try:
+				if p == None:
+					b += var				
+				else:					
 					b += '%.2f' %p	
-				except TypeError:	
-					m = ''
-					for n in p:
-						b += '%s%.2f' %(m, n)	
-						m = SEPARADOR_VAL
-			
+			except:	
+				m = ''
+				for n in p:
+					b += '%s%.2f' %(m, n)	
+					m = SEPARADOR_VAL			
 		return b	
 	l = ''	
 	
