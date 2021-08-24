@@ -236,6 +236,7 @@ class programa:
 SINAIS = ('(-)','(+)')		
 REPRESENTE = {None: bac.VARIA, False: 'NEGATIVO ', True: 'POSITIVO '}
 RES = ((True,REPRESENTE[1] + SINAIS[1],'mediumaquamarine'),(False,REPRESENTE[0] + SINAIS[0],'tomato'),(None,'Incerto +/-','yellow'))
+
 RGB_TO_HEX = lambda r,g,b,max=255: '#%02x%02x%02x' %(int(max*r),int(max*g),int(max*b))
 CONSTANTE_AZUL = lambda a,b,c:'PowderBlue'
 GRADIENTE_AZUL = lambda p,max_p,max_v = bac.PORCENTAGEM_MAX: RGB_TO_HEX(*colorsys.hsv_to_rgb((p/(max_p*6)) + 2/3,.2+(.3*p/max_v),1))
@@ -265,7 +266,6 @@ def listar (bact, mestre, sep = ' %s ' %bac.SEPARADOR_COL, fim = '%', cor = GRAD
 	caixa.lista.config(yscrollcommand = caixa.barra_y.set, xscrollcommand=caixa.barra_x.set)	
 	caixa.lista.pack(side=tkinter.RIGHT)
 
-	
 	maior = 0
 	largura = 22
 	for b in bact:
@@ -325,31 +325,35 @@ def tabelar (testes, mestre, sinais = SINAIS, largura = COLUNAS_POR_LINHA, val_s
 
 VAR = {bac.bacteria.__name__:bac.bacteria}
 
-def registrar_java (bact,testes = None, adicionar = 'insert', arq = JAVA, tab=2):
+def registrar_java (bact,testes = None, adicionar = 'a.add', arq = JAVA, tab=2):
 	res = arq
 	if type(arq) == str:
 		res = open(arq,'w',encoding=UTF8)
 	if type(tab) != str:	
 		tab *= '\t'
+	if testes != None:		
+		s = tab + 'new String[]{'
+		for t in testes:
+			print(end='%s"%s"' %(s,t.replace('"','\\"')),file=res)
+			s = bac.SEPARADOR_VAL
+		print('};\n',file=res)
+
 
 	for b in bact:	
 		if type(b) != bac.bacteria:
 			registrar_java(bact,arq=res,tab=tab)
 			continue
-		print('\n%sb = new Bacteria("%s");' %(tab,b.nome.replace('"',"\"")),file=res)
+		print('\n%sb = new Bacteria("%s");' %(tab,b.nome.replace('"',"\\\"")),file=res)
 		for t in b.probabilidades:
-			print('%sb.setProbabilities("%s"'%(tab,t.replace('"',"\"")),file=res,end=', ')
+			print('%sb.setProbabilities("%s"'%(tab,t.replace('"',"\\\"")),file=res,end=',\t')
 			if hasattr(b.probabilidades[t],'__len__'):
-				s = ''
-				print(end='new double[]{',file=res)
+				s = 'new double[]{'				
 				for v in b.probabilidades[t]: 
 					print(s,v,file=res,end='')
 					s = bac.SEPARADOR_VAL
 				print(end='}',file=res)		
 			elif b.probabilidades[t] != None:		
-				print(end='new double[]{',file=res)
-				print(b.probabilidades[t],file=res,end='')
-				print(end='}',file=res)	
+				print('new double[]{',b.probabilidades[t],file=res,end='}')					
 			else:	
 				print('null',file=res, end='')
 			print(');',file=res) 	
@@ -448,6 +452,7 @@ if __name__ == '__main__':
 
 	programa().mainloop()		
 	
+	print('Registrando versão Java')
 	registrar_java(*ler_tabela())
 	
 

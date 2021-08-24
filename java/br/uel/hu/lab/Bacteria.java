@@ -3,6 +3,7 @@ package br.uel.hu.lab;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -171,15 +172,15 @@ public class Bacteria {
 		StringBuffer s = new StringBuffer();
 		if(p.length > 1)
 			s.append(open);
-		s.append(String.format("%." + frac0 + "f", p[0]));
+		s.append(String.format(Locale.US, "%." + frac0 + "f", p[0]));
 		for(int c = 1; c < p.length; c++)
-			s.append(sep).append(String.format("%."+fracn+"f",p[c]));
+			s.append(sep).append(String.format(Locale.US,"%."+fracn+"f",p[c]));
 		if(p.length > 1)
 			s.append(close);				
 		return s.toString();
 	}
 	public static String OPEN_RANGE = "[";
-	public static String CLOSE_RANGE = "[";
+	public static String CLOSE_RANGE = "]";
 	public static String SEP_ITEM = ", ";
 	public static String NULL_ITEM = "v";
 	public static String probability (double[] p, int frac) {
@@ -263,7 +264,7 @@ public class Bacteria {
 
 		@Override
 		public int compare(Bacteria x, Bacteria y) {
-			// TODO Auto-generated method stub			
+						
 			return Bacteria.compare(x, y);
 		}
 		
