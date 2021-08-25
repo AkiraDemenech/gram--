@@ -3,18 +3,16 @@ package br.uel.hu.lab;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Test {
+public class Test implements Eukaryotes {
 	
 	private List<Bacteria> bacterias;
 	
-	public static void main(String[] args) {
 								
-		System.out.println(Bacteria.probability(new double[]{97}, 3));
 		
 		
 		
 
-	}
+	
 	
 	public Test (List<Bacteria> list) {
 		bacterias = list;
@@ -27,10 +25,12 @@ public class Test {
 		bacterias.add(bact);
 	}
 	
+	@Override
 	public String[] tests () {
 		return new String[]{"Gás glicose", "Urease (URE)", "H2S", "DNAse", "Motilidade (MOT)", "Indol (IND)", "Lisina (LDC)", "Citrato (CIT)", "Malonato (MAL)", "Ornitina (ODC)", "Arginina (ADH)", "Gelatinase", "Fenilalanina (PD)", "Lactose (LAC)", "Sacarose (SAC)", "Esculina (ESC)"};
 	}
 	
+	@Override
 	public List<Bacteria> populate (List<Bacteria> a) {
 		
 		if(a == null)

@@ -352,7 +352,7 @@ def registrar_java (bact,testes = None, adicionar = 'a.add', arq = JAVA, tab=2):
 					print(s,v,file=res,end='')
 					s = bac.SEPARADOR_VAL
 				print(end='}',file=res)		
-			elif b.probabilidades[t] != None:		
+			elif b.probabilidades[t] != None:						
 				print('new double[]{',b.probabilidades[t],file=res,end='}')					
 			else:	
 				print('null',file=res, end='')

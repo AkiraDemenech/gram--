@@ -1,3 +1,13 @@
+# Android images
+res/drawable
+res/drawable-v24
+res/mipmap-anydpi-v26
+res/mipmap-xxxhdpi
+res/mipmap-xxhdpi
+res/mipmap-xhdpi
+res/mipmap-hdpi
+res/mipmap-mdpi
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
