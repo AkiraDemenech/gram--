@@ -11,17 +11,28 @@
 	
 	
 	<LinearLayout
-		android:id="@+id/content_content"
+		android:id="@+id/content"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical">
-		
-		<TextView
-			android:id="@+id/content_text"
-			android:layout_margin="@dimen/text_margin"
-			android:layout_width="wrap_content"
+		<LinearLayout
+			android:id="@+id/content_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="Carregando testes...." />
+			android:orientation="vertical">
+			<TextView
+				android:id="@+id/content_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_margin="@dimen/text_margin"
+				android:text="Carregando testes...." />
+		</LinearLayout>
+		
+		<Button
+			android:id="@+id/button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="aguardando..." />
 	
 	</LinearLayout>
 

@@ -179,10 +179,17 @@ public class Bacteria {
 			s.append(close);				
 		return s.toString();
 	}
-	public static String OPEN_RANGE = "[";
-	public static String CLOSE_RANGE = "]";
-	public static String SEP_ITEM = ", ";
-	public static String NULL_ITEM = "v";
+	public static final int CONSIDERAR_A_PARTIR_DE = 1;
+	public static final int NEGATIVO = 1;
+	public static final int POSITIVO = 2;
+	public static final int IMPRECISO = 3;
+	public static final int IGNORAR = 0;
+	public static final String[] RESPOSTAS = {"ignorar", "NEGATIVO (-)", "POSITIVO (+)", "Incerto (+/-)"};
+	public static final String SINAIS = " -+/";
+	public static final String OPEN_RANGE = "[";
+	public static final String CLOSE_RANGE = "]";
+	public static final String SEP_ITEM = ", ";
+	public static final String NULL_ITEM = "v";
 	public static String probability (double[] p, int frac) {
 		return probability(p,frac,frac-1);
 	}
