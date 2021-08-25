@@ -1,6 +1,7 @@
 
 package br.uel.hu.android;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,6 +10,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -18,8 +21,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 import br.uel.hu.lab.Test;
 import br.uel.hu.lab.Eukaryotes;
@@ -30,7 +35,9 @@ public class LabInput extends AppCompatActivity {
 
 
 
-	public Map<String,Spinner> sp;
+	public static final String TEST_NAMES = "\ttests";
+	public static final Eukaryotes testsData = new Test();
+	private Map<String,Spinner> sp;
 
 	public Spinner createDropDown (String[] opt) {
 		Spinner dropdown = new Spinner(this);
@@ -51,9 +58,9 @@ public class LabInput extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Eukaryotes testsData = new Test();
 		this.sp = new HashMap<>();
 
+		setContentView(R.layout.activity_scrolling);
 
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -62,48 +69,46 @@ public class LabInput extends AppCompatActivity {
 		toolBarLayout.setTitle(getTitle());
 
 
-		LinearLayout l;
+		LinearLayout l, container = (LinearLayout) findViewById(R.id.content_content);
 		TextView label;
 		Spinner dpdn;
 		String[] tests = testsData.tests();
 		for(int c = 0; c < tests.length; c++)
 		{
 			dpdn = createDropDown();
+		//	dpdn.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
 			label = new TextView(this);
 			l = new LinearLayout(this);
-			((LinearLayout) findViewById(R.id.content_content)).addView(l);
-			l.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,0));
+			l.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
 			l.setOrientation(LinearLayout.HORIZONTAL);
 			l.addView(label);
 			l.addView(dpdn);
 
 
+			container.addView(l);
 
 
 
 			sp.put(tests[c], dpdn);
 			label.setText('\t' + tests[c] + '\t');
 		}
-		setContentView(R.layout.activity_scrolling);
 		Button b = (Button) findViewById(R.id.button);
 		b.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(LabInput.this, LabOutput.class);
 				Bundle b = new Bundle();
+				ArrayList<String> t = new ArrayList<>();
 				for(Map.Entry<String,Spinner> e: sp.entrySet())
 					if(!e.getValue().getSelectedItem().toString().equals(Bacteria.RESPOSTAS[Bacteria.IGNORAR]))
 						for(int c = Bacteria.CONSIDERAR_A_PARTIR_DE; c < Bacteria.RESPOSTAS.length; c++)
 							if(e.getValue().getSelectedItem().toString().equals(Bacteria.RESPOSTAS[c]))
 							{
 								b.putChar(e.getKey(), Bacteria.SINAIS.charAt(c));
+								t.add(e.getKey());
 								System.out.println(e.getKey() + '\t' + e.getValue().getSelectedItem());
 							}
-					/*	if(e.getValue().getSelectedItem().toString().equals(respostas[POSITIVO]))
-							b.putInt(e.getKey(), 1);
-						else if(e.getValue().getSelectedItem().toString().equals(respostas[NEGATIVO]))
-							b.putInt(e.getKey(),-1);
-						else b.putInt(e.getKey(),0); */
+				b.putStringArrayList(TEST_NAMES,t);
 				i.putExtras(b);
 				startActivity(i);
 			}

@@ -222,9 +222,6 @@ def testar (testes,bact,repetir_incerteza = True,certeza = None):
 		for t in testes:
 			if testes[t] == None:				  
 
-				testes = testes.copy()
-				testes.pop(t)
-				yield from testar(testes,bact,True,certeza)				
 
 				testes = testes.copy()
 				testes[t] = False
@@ -233,6 +230,9 @@ def testar (testes,bact,repetir_incerteza = True,certeza = None):
 				testes = testes.copy()
 				testes[t] = True
 				yield from testar(testes,bact,True,certeza)
+				testes = testes.copy()
+				testes.pop(t)
+				yield from testar(testes,bact,True,certeza) 
 				return
 
 	possibilidades = [b.testar(testes,certeza) for b in bact]
