@@ -11,15 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 
-import android.view.ViewGroup;
+
 import android.widget.LinearLayout;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,6 @@ import br.uel.hu.lab.Bacteria;
 
 
 public class LabInput extends AppCompatActivity {
-
 
 
 	public static final String TEST_NAMES = "\ttests";
@@ -83,8 +82,6 @@ public class LabInput extends AppCompatActivity {
 			l.setOrientation(LinearLayout.HORIZONTAL);
 			l.addView(label);
 			l.addView(dpdn);
-
-
 			container.addView(l);
 
 
@@ -115,8 +112,6 @@ public class LabInput extends AppCompatActivity {
 		});
 		b.setText("Testar!");
 		((TextView) findViewById(R.id.content_text)).setText("Selecione os resultados:");
-
-
 
 	}
 

@@ -1,10 +1,17 @@
 package br.uel.hu.lab;
 
 
+
+
+
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.List;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 
@@ -37,7 +44,7 @@ public class Bacteria {
 		return this.probabilities;
 	}
 	public double[] getProbabilities (String test) {
-		return this.probabilities.getOrDefault(test, null);
+		return this.probabilities.get(test);
 	}
 	public boolean setProbabilities (String test, double[] probability) {
 		if(this.probabilities == null)
@@ -55,7 +62,7 @@ public class Bacteria {
 	public String getName () {
 		return this.name;
 	}
-	
+
 	public Bacteria (String name) {
 		this(name,new HashMap<>());		
 		
@@ -86,6 +93,13 @@ public class Bacteria {
 		return b;
 	}
 	
+
+	@Override
+	public String toString() {
+		return probability(this.result,3) + '\t' + this.name;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -179,13 +193,16 @@ public class Bacteria {
 			s.append(close);				
 		return s.toString();
 	}
+
 	public static final int CONSIDERAR_A_PARTIR_DE = 1;
 	public static final int NEGATIVO = 1;
 	public static final int POSITIVO = 2;
 	public static final int IMPRECISO = 3;
 	public static final int IGNORAR = 0;
+
 	public static final String[] RESPOSTAS = {"ignorar", "NEGATIVO (-)", "POSITIVO (+)", "Incerto (+/-)"};
 	public static final String SINAIS = " -+/";
+
 	public static final String OPEN_RANGE = "[";
 	public static final String CLOSE_RANGE = "]";
 	public static final String SEP_ITEM = ", ";
@@ -278,4 +295,12 @@ public class Bacteria {
 	}
 	
 	
+
+	public static List<Bacteria> results (List<Bacteria> probabilities, Map<String,Boolean> tests) {
+		ArrayList<Bacteria> possibilities = new ArrayList<>();
+		for(Bacteria b : probabilities)
+			possibilities.add(b.test(tests));
+		Collections.sort(possibilities,new Bacteria.Sort());
+		return possibilities;
+	}
 }
