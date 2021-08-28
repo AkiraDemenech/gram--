@@ -69,6 +69,8 @@ public class LabOutput extends AppCompatActivity {
 	public int results (int count, LinearLayout ll, List<Bacteria> bact, Map<String, Boolean> tests) {
 		if(tests.size() == 0) // se não houver nada no mapeamento, nem tenta começar
 			return count;
+		String sep = "";
+		StringBuffer header = new StringBuffer().append("\n\tPara ").append(tests.size()).append(" testes: ");
 		tests = new HashMap<String, Boolean>(tests);
 		for(Map.Entry<String, Boolean> p: tests.entrySet())
 			if(p.getValue() == null)
@@ -80,18 +82,25 @@ public class LabOutput extends AppCompatActivity {
 				count = results(count,ll,bact,tests);
 
 				tests.remove(p.getKey());
-			//	System.out.print('\n');
 				return results(count,ll,bact,tests);
-			} //else System.out.print("\t" + p.getKey() + "\t" + p.getValue());
-	//	System.out.print('\n');
+			} else {
+				header.append(sep).append(p.getKey()).append(' ').append(Bacteria.OPEN_RANGE).append(Bacteria.SINAIS.charAt(p.getValue() ? Bacteria.POSITIVO : Bacteria.NEGATIVO)).append(Bacteria.CLOSE_RANGE);
+				sep = Bacteria.SEP_ITEM;
+			}
 		bact = Bacteria.results(bact,tests);
 
-		ListAdapter ad = new ArrayAdapter<Bacteria>(this,android.R.layout.simple_list_item_1,bact);
 
-		ListView li = new ListView(this);
-		li.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-		li.setAdapter(ad);
+
+
+		TextView li = new TextView(this);
 		ll.addView(li);
+		li.setText(header.toString());
+		li = new TextView(this);
+		ll.addView(li);
+		StringBuffer list = new StringBuffer();
+		for(Bacteria b: bact)
+			list.append(b.toString()).append('\n');
+		li.setText(list.toString());
 
 		return count + 1;
 	}
