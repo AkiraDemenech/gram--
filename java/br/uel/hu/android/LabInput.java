@@ -69,13 +69,14 @@ public class LabInput extends AppCompatActivity {
 
 
 		LinearLayout l, container = (LinearLayout) findViewById(R.id.content_content);
-		TextView label;
+		TextView label, enter;
 		Spinner dpdn;
 		String[] tests = testsData.tests();
 		for(int c = 0; c < tests.length; c++)
 		{
 			dpdn = createDropDown();
 		//	dpdn.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+			enter = new TextView(this);
 			label = new TextView(this);
 			l = new LinearLayout(this);
 			l.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
@@ -83,11 +84,13 @@ public class LabInput extends AppCompatActivity {
 			l.addView(label);
 			l.addView(dpdn);
 			container.addView(l);
+			container.addView(enter);
 
 
 
 			sp.put(tests[c], dpdn);
 			label.setText('\t' + tests[c] + '\t');
+			enter.setText("\n");
 		}
 		Button b = (Button) findViewById(R.id.button);
 		b.setOnClickListener(new View.OnClickListener() {

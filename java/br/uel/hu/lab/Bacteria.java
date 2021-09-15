@@ -16,17 +16,17 @@ import java.util.Comparator;
 
 
 public class Bacteria {
-	
+
 	public Bacteria () {
 		setProbabilities(null);
-		
+
 	}
-	
+
 	public int compareTo (Bacteria b) {
 		return compare(b,this);
 	}
-	
-	
+
+
 
 	public double[] getResult () {
 		return result;
@@ -34,12 +34,12 @@ public class Bacteria {
 	public int getZeros () {
 		return zeros;
 	}
-	 
+
 	private int zeros = 0;
 	private double[] result = null;
 	private String name = null;
 	private Map<String,double[]> probabilities;
-	
+
 	public Map<String, double[]> getProbabilities () {
 		return this.probabilities;
 	}
@@ -55,7 +55,7 @@ public class Bacteria {
 	public void setProbabilities (Map<String,double[]> probabilities) {
 		this.probabilities = probabilities;
 	}
-	
+
 	public void setName (String name) {
 		this.name = name;
 	}
@@ -64,35 +64,34 @@ public class Bacteria {
 	}
 
 	public Bacteria (String name) {
-		this(name,new HashMap<>());		
-		
+		this(name,new HashMap<>());
+
 	}
 	public Bacteria (String name, Map<String,double[]> probabilities) {
 		setName(name);
-		setProbabilities(probabilities);		
+		setProbabilities(probabilities);
 	}
-	
+
 	public Bacteria test (Map<String, Boolean> tests) {
 		return test(tests,new HashMap<>());
 	}
-	public Bacteria test (Map<String, Boolean> tests, Map<String, double[]> results) {				
+	public Bacteria test (Map<String, Boolean> tests, Map<String, double[]> results) {
 		Bacteria b = new Bacteria(this.name,results);
 		double[] temp;
-		for(Map.Entry<String, Boolean> t: tests.entrySet()) {			
+		for(Map.Entry<String, Boolean> t: tests.entrySet()) {
 			temp = getProbabilities(t.getKey());
 			if(t.getValue() == null || temp == null)
-				continue;			
-			if(!t.getValue()) 
-				temp = complement(temp);														
+				continue;
+			if(!t.getValue())
+				temp = complement(temp);
 			b.result = multiply(b.result, temp);
 			results.put(t.getKey(), temp);
 			for(int c = 0; c < temp.length; c++)
-				if(temp[c] == 0) 
+				if(temp[c] == 0)
 					b.zeros++;
-		}				
+		}
 		return b;
 	}
-	
 
 	@Override
 	public String toString() {
@@ -105,11 +104,11 @@ public class Bacteria {
 		final int prime = 31;
 		int result = zeros;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((probabilities == null) ? 0 : probabilities.hashCode());		
+		result = prime * result + ((probabilities == null) ? 0 : probabilities.hashCode());
 		return prime * result + Arrays.hashCode(this.result);
 	}
 
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -118,27 +117,27 @@ public class Bacteria {
 			return false;
 		if (this.getClass() != obj.getClass())
 			return false;
-		
+
 		Bacteria other = (Bacteria) obj;
-		if (this.name == null) 
+		if (this.name == null)
 		{
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		
-		if (this.probabilities == null) 
+
+		if (this.probabilities == null)
 		{
 			if (other.probabilities != null)
 				return false;
 		} else if (!probabilities.equals(other.probabilities))
-			return false;		
+			return false;
 		return zeros == other.zeros && Arrays.equals(result, other.result);
 	}
-	
-	
-	
-	
+
+
+
+
 
 	public static double MAX_PERCENTAGE = 100;
 	public static double[] complement (double[] event) {
@@ -147,16 +146,16 @@ public class Bacteria {
 	public static double[] complement (double[] event, double max) {
 		if(event == null)
 			return null;
-		
+
 		double[] not = new double[event.length];
 		for(int c = 0; c < not.length; c++)
 			not[c] = max - event[event.length - 1 - c];
-		
+
 		return not;
 	}
-	
+
 	public static double[] multiply (double[] a, double[] b) {
-		return multiply(a,b,true); 
+		return multiply(a,b,true);
 	}
 	public static double[] multiply (double[] a, double[] b, boolean positivo) {
 		return multiply(a,b,positivo,MAX_PERCENTAGE);
@@ -167,18 +166,18 @@ public class Bacteria {
 		if(b == null)
 			return a;
 		double[] c = b;
-		double[] r = new double[a.length * b.length];		
-		if(!positivo) 
+		double[] r = new double[a.length * b.length];
+		if(!positivo)
 			c = complement(b,max);
 		for(int i = 0; i < a.length; i++)
 			for(int j = 0; j < c.length; j++)
 				r[j + (i * c.length)] = a[i] * c[j] / max;
 		Arrays.sort(r);
 		return r;
-	}	
+	}
 	public static double[] multiply (double[] a, double[] b, double max) {
 		return multiply(a,b,true,max);
-		
+
 	}
 	public static String probability (double[] p, int frac0, int fracn, String open, String close, String sep, String varies) {
 		if(p == null || p.length <= 0)
@@ -190,7 +189,7 @@ public class Bacteria {
 		for(int c = 1; c < p.length; c++)
 			s.append(sep).append(String.format(Locale.US,"%."+fracn+"f",p[c]));
 		if(p.length > 1)
-			s.append(close);				
+			s.append(close);
 		return s.toString();
 	}
 
@@ -213,88 +212,86 @@ public class Bacteria {
 	public static String probability (double[] p, int first_frac, int other_frac) {
 		return probability(p,first_frac,other_frac,OPEN_RANGE,CLOSE_RANGE,SEP_ITEM,NULL_ITEM);
 	}
-	
+
 	public static int compare (Bacteria u, Bacteria v) {
 		if(u != v) { // se forem instâncias diferentes
-			if(u == null) // v é maior 
+			if(u == null) // v é maior
 				return 1;
 			if(v == null) // u é maior
 				return -1;
-			
-			if(v.result != u.result) {				
+
+			if(v.result != u.result) {
 				if(v.result == null)
 					return -1; // u é maior
 				if(u.result == null)
 					return 1; // v é maior
-				
+
 				if(u.result.length > 0 || v.result.length > 0) {
 					if(u.result.length <= 0)
 						return 1;	// v é maior
 					if(v.result.length <= 0)
 						return -1;	// u é maior
-				
-					
-				
+
+
+
 					// sua maior possibilidade
 					if(v.result[v.result.length - 1] < u.result[u.result.length - 1])
 						return -1; // v é menor
 					if(u.result[u.result.length - 1] < v.result[v.result.length - 1])
 						return 1; // u é menor
-					
+
 					// sua menor possibilidade
 					if(v.result[0] > u.result[0])
 						return 1; // v é maior
 					if(u.result[0] > v.result[0])
 						return -1; // u é maior
 				}
-				
+
 				// quantos zeros multiplicaram seu resultado
 				if(v.zeros > u.zeros)
 					return -1; // u é maior
 				if(v.zeros < u.zeros)
 					return 1; // v é maior
-				
+
 			}
-			
+
 			if(u.probabilities != v.probabilities){
 				if(u.probabilities == null)
 					return 1;	// v é maior
 				if(v.probabilities == null)
 					return -1;	// u é maior
-				
+
 				if(v.probabilities.size() < u.probabilities.size())
 					return -1; //	 u é maior
 				if(v.probabilities.size() > u.probabilities.size())
-					return 1; //	v é maior			
+					return 1; //	v é maior
 			}
-			
-			
+
+
 			if(u.name != null || v.name != null) {
 
 				if(v.name == null)
 					return -1;
 				if(u.name == null)
 					return 1;
-				
+
 				return v.name.compareTo(u.name);
 			}
-			
+
 		}
-		
+
 		return 0;
 	}
-	
+
 	public static class Sort implements Comparator<Bacteria> {
 
 		@Override
 		public int compare(Bacteria x, Bacteria y) {
-						
+
 			return Bacteria.compare(x, y);
 		}
-		
+
 	}
-	
-	
 
 	public static List<Bacteria> results (List<Bacteria> probabilities, Map<String,Boolean> tests) {
 		ArrayList<Bacteria> possibilities = new ArrayList<>();
@@ -303,4 +300,6 @@ public class Bacteria {
 		Collections.sort(possibilities,new Bacteria.Sort());
 		return possibilities;
 	}
+
+
 }

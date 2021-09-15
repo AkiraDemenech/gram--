@@ -1,4 +1,4 @@
-	Gás glicose	Urease (URE)	H2S	DNAse	Motilidade (MOT)	Indol (IND)	Lisina (LDC)	Citrato (CIT)	Malonato (MAL)	Ornitina (ODC)	Arginina (ADH)	Gelatinase	Fenilalanina (PD)	Lactose (LAC)	Sacarose (SAC)	Esculina (ESC)
+	Gás glicose	Urease (URE)	H2S	DNAse	Motilidade (MOT)	Indol (IND)	Lisina (LDC)	Citrato (CIT)	Malonato (MAL)	Ornitina (ODC)	Arginina (ADH)	Gelatinase	Fenilalanina (LTD)	Lactose (LAC)	Sacarose (SAC)	Esculina (ESC)
 Citrobacter freundii	89	44	78	0	89	33	0	78	11	0	67	0	0	78	89	0
 Citrobacter diversus (kosen)	98	75	0	0	95	99	0	99	95	99	80	0	0	50	40	1
 Citrobacter amalonaticus	97	85	5	0	95	100	0	95	1	95	85	0	0	35	9	5
