@@ -334,6 +334,16 @@ def corrigir (lista):
 
 #	return {extrair(b,testes,nomeado,col_sep,prob_max,var) for b in texto}	
 
+def listar (x, y = None, t = bacteria, v = type):
+	if y == None:
+		y = []
+
+	for u in x:
+		if v(u) == t:
+			y.append(u)
+		else:	
+			listar(u, y, t)
+	return y		
 
 
 

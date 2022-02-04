@@ -1,6 +1,7 @@
 # arquivo com as probabilidades das bactérias para positivo nos testes
 PROBABILIDADES = 'lab.txt'	# Arquivo onde estão registrados os dados das bactérias e as probabilidades de positivo nos testes (com seus nomes)
 PARCIAL = 'lab.log'	# Arquivo onde serão registrados os dados no formato do Python
+JAVASCRIPT = 'lab.js'
 JAVA = 'lab.java'
 NOME = 'lab.programa'	# Nome padrão da janela do programa
 UTF8 = 'utf-8'
@@ -317,13 +318,25 @@ def tabelar (testes, mestre, sinais = SINAIS, largura = COLUNAS_POR_LINHA, val_s
 			continue	
 	tkinter.Label(mestre,justify=tkinter.LEFT,text='para %d teste%s: %s' %(c,'s'*(c!=1),texto)).pack(fill=tkinter.X)	
 
-
+ 
 			
 			
 
 
 
 VAR = {bac.bacteria.__name__:bac.bacteria}
+
+def registrar_javascript (bact, testes = None, arq = JAVASCRIPT):
+		 	
+
+	if type(arq) == str:
+		arq = open(arq, 'w', encoding='utf8')
+		
+	 
+	print(end = str([{'testes': [] if testes == None else list(testes) if type(testes) != str else [testes], 'bact': bac.listar(bact)}]).replace(': None',': null'), file = arq)
+
+	if type(arq) != str:
+		arq.close()
 
 def registrar_java (bact,testes = None, adicionar = 'a.add', arq = JAVA, tab=2):
 	res = arq
@@ -451,9 +464,14 @@ def registrar_tabela (bact,testes = None,resultados = None, arq = RESULTADO, tri
 if __name__ == '__main__':	
 
 	programa().mainloop()		
+
+	tabela = ler_tabela()
+
+	print('Registrando versão JavaScript')
+	registrar_javascript(*tabela)
 	
 	print('Registrando versão Java')
-	registrar_java(*ler_tabela())
+	registrar_java(*tabela)
 	
 
 	
