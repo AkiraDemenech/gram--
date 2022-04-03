@@ -23,10 +23,10 @@ class programa:
 		print('Iniciando a interface gráfica\n')
 		return self.principal.mainloop()
 
-	def destroy (self):	
+	def destroy (self):			
 		return self.principal.destroy()
 
-	def quit (self):
+	def quit (self):		
 		return self.principal.quit()
 
 	def title (self, nome):
@@ -461,9 +461,44 @@ def registrar_tabela (bact,testes = None,resultados = None, arq = RESULTADO, tri
 
 
 
-if __name__ == '__main__':	
+def principal (espera = 15, avisos_a_cada = 5, avisar = True):	
 
 	programa().mainloop()		
+
+	try:
+		import os
+		import threading
+
+		print('Fechando a interface gráfica\n')
+
+		
+
+		def close_after (segundos=espera):
+			
+			
+			
+
+			while segundos >= 0:
+				time.sleep(1)
+				if segundos % avisos_a_cada < avisar or segundos < avisar * avisos_a_cada:
+					print('\n\tFechando automaticamente em', segundos, 'segundo' + ('s' * (segundos != 1)))
+				segundos -= 1
+				
+
+			print('\n\n\t\tPrograma fechado automaticamente.')	
+
+			
+			os._exit(segundos + 1)
+			
+
+		t = threading.Thread(target = close_after)
+		t.start()		
+	except ModuleNotFoundError:
+		print('Não foi possível inicializar a contagem regressiva.\nAperte enter para encerrar.')	
+		
+
+	if not input('Gostaria de registrar os dados para as versões Java e JS? (S/N)\t').strip().upper()[0] in 'SY':				
+		os._exit(0)
 
 	tabela = ler_tabela()
 
@@ -473,9 +508,9 @@ if __name__ == '__main__':
 	print('Registrando versão Java')
 	registrar_java(*tabela)
 	
-
 	
 
 		
 
-
+if __name__ == '__main__':
+	principal()

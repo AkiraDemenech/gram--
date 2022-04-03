@@ -4,6 +4,7 @@
 lab.txt é a a tabela com as informações das bactérias (linhas) e os testes (colunas, separadas por tab),
 lab.log é gerado pelo programa com a lista de objetos extraídos da tabela,
 lab.py é o programa.
+lab.pyw abre o programa sem a janela do console.
 
 ** Todos os arquivos devem estar na mesma pasta, incluindo o script bac.py 
 
