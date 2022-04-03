@@ -56,6 +56,8 @@ class programa:
 
 		try:
 			for pt in bac.testar(self.entradas(),self.probabilidades):
+				if not len(pt[1]):
+					continue
 			
 				p = tkinter.Frame(self.janela.resultados)
 				p.pack(fill=tkinter.X, padx=14, pady=6)
@@ -507,6 +509,7 @@ def principal (espera = 15, avisos_a_cada = 5, avisar = True):
 	
 	print('Registrando versão Java')
 	registrar_java(*tabela)
+	
 	
 	
 
