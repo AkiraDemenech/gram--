@@ -1,0 +1,8 @@
+# bibliotecas requeridas para rodar o programa 
+numpy 	
+tkinter	# nativa em alguns sistemas 
+
+# bibliotecas nativas 
+colorsys	
+time	
+random	 

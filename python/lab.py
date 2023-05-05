@@ -465,7 +465,7 @@ def registrar_tabela (bact,testes = None,resultados = None, arq = RESULTADO, tri
 
 def principal (espera = 15, avisos_a_cada = 5, avisar = True):	
 
-	programa().mainloop()		
+	programa().mainloop()			
 
 	try:
 		import os
@@ -499,7 +499,7 @@ def principal (espera = 15, avisos_a_cada = 5, avisar = True):
 		print('Não foi possível inicializar a contagem regressiva.\nAperte enter para encerrar.')	
 		
 
-	if not input('Gostaria de registrar os dados para as versões Java e JS? (S/N)\t').strip().upper()[0] in 'SY':				
+	if espera <= 0 or not input('Gostaria de registrar os dados para as versões Java e JS? (S/N)\t').strip().upper()[0] in 'SY':				
 		os._exit(0)
 
 	tabela = ler_tabela()
