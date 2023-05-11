@@ -105,3 +105,4 @@ function bacteria (nome, probabilidades = null, max_prob = PORCENTAGEM_MAX, col_
 	probabilidades[col_sep] = nome	
 	return probabilidades
 }
+

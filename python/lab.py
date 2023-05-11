@@ -334,7 +334,6 @@ def registrar_javascript (bact, testes = None, arq = JAVASCRIPT):
 	if type(arq) == str:
 		arq = open(arq, 'w', encoding='utf8')
 		
-	 
 	#print(end='import bacteria from "Bact";\nexport const dados = ', file=arq) 
 	print(end=str([{'testes': [] if testes == None else list(testes) if type(testes) != str else [testes], 'bact': bac.listar(bact)}]).replace(': None',': null'), file = arq)
 
