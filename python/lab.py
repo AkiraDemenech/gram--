@@ -32,7 +32,7 @@ class programa:
 	def title (self, nome):
 		return self.principal.title(nome)	
 
-	def limpar (self, recado = bac.SEPARADOR_COL, aviso = 'Limpando os resultados...'):
+	def limpar (self, recado = bac.SEPARADOR_COL, aviso = '\nLimpando os resultados....\n'):
 		print(aviso)	
 		self.janela.resultados.nome.config(text=aviso)		
 		for res in self.janela.resultados.possibilidades:
@@ -238,7 +238,7 @@ class programa:
 		
 SINAIS = ('(-)','(+)')		
 REPRESENTE = {None: bac.VARIA, False: 'NEGATIVO ', True: 'POSITIVO '}
-RES = ((True,REPRESENTE[1] + SINAIS[1],'mediumaquamarine'),(False,REPRESENTE[0] + SINAIS[0],'tomato'),(None,'Incerto +/-','yellow'))
+RES = ((None,'Incerto +/-','yellow'),(True,REPRESENTE[1] + SINAIS[1],'mediumaquamarine'),(False,REPRESENTE[0] + SINAIS[0],'tomato'))
 
 RGB_TO_HEX = lambda r,g,b,max=255: '#%02x%02x%02x' %(int(max*r),int(max*g),int(max*b))
 CONSTANTE_AZUL = lambda a,b,c:'PowderBlue'
@@ -335,7 +335,8 @@ def registrar_javascript (bact, testes = None, arq = JAVASCRIPT):
 		arq = open(arq, 'w', encoding='utf8')
 		
 	 
-	print(end = str([{'testes': [] if testes == None else list(testes) if type(testes) != str else [testes], 'bact': bac.listar(bact)}]).replace(': None',': null'), file = arq)
+	#print(end='import bacteria from "Bact";\nexport const dados = ', file=arq) 
+	print(end=str([{'testes': [] if testes == None else list(testes) if type(testes) != str else [testes], 'bact': bac.listar(bact)}]).replace(': None',': null'), file = arq)
 
 	if type(arq) != str:
 		arq.close()
@@ -487,7 +488,7 @@ def principal (espera = 15, avisos_a_cada = 5, avisar = True):
 				segundos -= 1
 				
 
-			print('\n\n\t\tPrograma fechado automaticamente.')	
+			print('\n\n\t\tPrograma fechado.')	
 
 			
 			os._exit(segundos + 1)
@@ -499,7 +500,7 @@ def principal (espera = 15, avisos_a_cada = 5, avisar = True):
 		print('Não foi possível inicializar a contagem regressiva.\nAperte enter para encerrar.')	
 		
 
-	if espera <= 0 or not input('Gostaria de registrar os dados para as versões Java e JS? (S/N)\t').strip().upper()[0] in 'SY':				
+	if espera <= 0 or input('Gostaria de registrar os dados para as versões Java e JS? (S/N)\t').strip().upper()[:1] in 'N':				
 		os._exit(0)
 
 	tabela = ler_tabela()
