@@ -112,7 +112,7 @@ class bacteria:
 		return self.probabilidades.__iter__()
 
 	def __repr__ (self):
-		return self.__class__.__name__ + '(' + self.nome.__repr__() + SEPARADOR_VAL + self.probabilidades.__str__() + SEPARADOR_VAL + str(self.max) + SEPARADOR_VAL + repr(self.sep) + ')'		
+		return self.__class__.__name__ + '(' + self.nome.__repr__() + SEPARADOR_VAL + self.probabilidades.__str__() + SEPARADOR_VAL + str(self.max) + ((SEPARADOR_VAL + repr(self.sep)) * (self.sep != SEPARADOR_COL)) + ')'		
 
 	def __hash__ (self):
 		return self.nome.__hash__() + 31 * self.max.__hash__()
@@ -291,6 +291,8 @@ def extrair (texto, testes = None, nomeado = True, col_sep = SEPARADOR_COL, prob
 		while c < len(texto):	
 			try:
 				r[testes[c]] = eval(texto[c].title(),var)
+				if type(r[testes[c]]) == tuple:
+					r[testes[c]] = list(r[testes[c]])
 			except IndexError:				
 				break 
 			except: 	
