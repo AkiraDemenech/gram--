@@ -1,6 +1,5 @@
 PORCENTAGEM_MAX = 100;
 TAG_NOME = '\t'
-
 function num_comp (x,y) {
 	return x - y;
 } 
@@ -20,7 +19,6 @@ function mult (a, b, m = 1, r = null) {
 			r = [];			
 		for(var c = 0; c < a.length; c++)
 			mult(b, a[c], m, r);			
-			
 		
 		//console.log(a,b,m,r)	
 		r.sort(num_comp)	

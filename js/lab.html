@@ -88,7 +88,7 @@
 							p = p[p.length - 1]
 
 						ln = document.createElement('div')
-						ln.style = 'background-color:hsl(' + (360 * ((p/(max_p*6)) + 2/3)) + ',' + (100 * (.2+(.3*p/max_p))) + '%,'+(50*(1+(p==0)))+'%);'
+						ln.style = 'background-color:hsl(' + (360 * ((p/(max_p*6)) + 2/3)) + ',' + (100 * (.2+(.3*p/max_p))) + '%,'+(25*(3+(p==0)))+'%);'
 						ln.innerHTML = r[i].resultados[j].probabilidade + '\t' + r[i].resultados[j].nome
 						a.probabilidades.appendChild(ln)
 					//	a.probabilidades.appendChild()
@@ -149,5 +149,16 @@
 			} 
 
 		</script>
+
+		Código-fonte disponível em <a href="https://github.com/akirademenech/gram--/tree/main/js/" target="_blank">github.com/AkiraDemenech/gram--</a>
+
+		<br>
+
+		Acesse online em <a href="https://akirademenech.github.io/ccs/bgn/lab.html" target="_blank">akirademenech.github.io/ccs/bgn/lab.html</a>
+
+		<br>
+
+		Última atualização em 
+		12/05/2023
 	</body>	
 </html>
