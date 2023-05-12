@@ -53,12 +53,54 @@
 
 				console.log(testes)	
 
-				console.log(ranquear(t.bact, testes))
+				r = ranquear(t.bact, testes)
+				console.log(r)
+
+				for(i = 0; i < r.length; i++) {
+					a = document.createElement('div')
+					t.resultados.appendChild(a)
+
+					a.testes = document.createElement('b')
+					a.appendChild(a.testes)
+
+					a.probabilidades = document.createElement('p')
+					a.appendChild(a.probabilidades)
+
+					s = ':'
+					c = 0
+					for(k in r[i].testes) {
+						a.testes.appendChild(document.createTextNode(s + ' ' + k + ' [' + '-+'[0+r[i].testes[k]] + ']'))
+						s = ','
+						c++
+					}	
+					a.testes.insertBefore(document.createTextNode('Para ' + c + ' teste' + ['', 's'][1 - (c == 1)]), a.testes.childNodes[0])
+
+					max_p = 100
+					if(r[i].resultados.length > 0) {
+						max_p = r[i].resultados[0].probabilidade
+						if(Array.isArray(max_p))
+							max_p = max_p[max_p.length - 1]
+					}	
+
+					for(j = 0; j < r[i].resultados.length; j++) {
+						p = r[i].resultados[j].probabilidade
+						if(Array.isArray(p))
+							p = p[p.length - 1]
+
+						ln = document.createElement('div')
+						ln.style = 'background-color:hsl(' + (360 * ((p/(max_p*6)) + 2/3)) + ',' + (100 * (.2+(.3*p/max_p))) + '%,'+(50*(1+(p==0)))+'%);'
+						ln.innerHTML = r[i].resultados[j].probabilidade + '\t' + r[i].resultados[j].nome
+						a.probabilidades.appendChild(ln)
+					//	a.probabilidades.appendChild()
+					}
+				}
+
+				
 			}
 			
 			function entrada () {
 				e = document.createElement('select')
-				for(p = 0; p < op.length; p++) {
+				for(var p = 0; p < op.length; p++) {
 					o = document.createElement('option')
 					o.value = op[p]
 					o.innerHTML = op[p]
@@ -76,13 +118,18 @@
 				d.testes = dados[c].testes
 				d.bact = dados[c].bact
 				d.entradas = []
+				d.campos = document.createElement('div')				
+				d.appendChild(d.campos)
 
 				for(t = 0; t < d.testes.length; t++) {
-					d.appendChild(document.createTextNode(d.testes[t] + '\t'))
-					i = entrada()
+					p = document.createElement('p')
+					p.name = d.testes[t]
+					p.appendChild(document.createTextNode(d.testes[t] + '\t'))
+					i = entrada()					
+					p.appendChild(i)
+					d.campos.appendChild(p)
 					d.entradas[t] = i
-					d.appendChild(i)
-					d.appendChild(document.createElement('br'))
+				//	d.campos.appendChild(document.createElement('br'))
 				}
 
 				b = document.createElement('input')	

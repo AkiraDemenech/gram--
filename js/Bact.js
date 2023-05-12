@@ -24,7 +24,7 @@ function mult (a, b, m = 1, r = null) {
 		
 		//console.log(a,b,m,r)	
 		r.sort(num_comp)	
-		console.log(r)
+		//console.log(r)
 		return r;	
 	}	
 
@@ -153,26 +153,29 @@ function comparar (x, y) {
 }
 
 function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
-	resultados = []
-	param = {}
-	for(t in testes)
-		if(testes[t] === null) {
+	var resultados = []
+	var param = {}	
+	for(var t in testes)
+		if(testes[t] == null) {
+			if(testes[t] === undefined)
+				continue;
 			testes[t] = false
-			resultados = resultados.concat(testar(bact, testes))
+			resultados = resultados.concat(ranquear(bact, testes))
 
 			testes[t] = true
-			resultados = resultados.concat(testar(bact, testes))				
+			resultados = resultados.concat(ranquear(bact, testes))				
 
 			testes[t] = undefined 				
-		} else if(testes[t] != undefined) 
-			param[t] = testes[t]
+		} else param[t] = testes[t]
 
-	res = {testes: param, resultados: []}
+	var res = {testes: param, resultados: []}
 	resultados[resultados.length] = res	
 
 	for(b in bact) 
 		res.resultados[res.resultados.length] = {nome: bact[b][nome],  probabilidade: mult(prob(bact[b], testes), max_prob)}
 	res.resultados.sort(comparar)	
+
+	console.log(testes, param)	
 
 	return resultados 
 }
