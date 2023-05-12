@@ -1,5 +1,5 @@
 
-package br.uel.hu.android;
+package br.uel.ccs.android;
 
 
 import android.content.Intent;

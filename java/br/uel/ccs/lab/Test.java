@@ -1,4 +1,4 @@
-package br.uel.hu.lab;
+package br.uel.ccs.lab;
 
 import java.util.ArrayList;
 import java.util.List;
