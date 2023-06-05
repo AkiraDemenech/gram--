@@ -2,6 +2,14 @@ body {
 	background: aquamarine;
 }
 
+label {
+	font-weight: bold;
+}
+
+a {
+	color: purple;
+}
+
 div.teste {
 	background: #f0f0f0;
 }

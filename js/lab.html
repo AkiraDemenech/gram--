@@ -1,8 +1,15 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="pt-br">
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		
+
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 		<link rel="stylesheet" href="https://akirademenech.github.io/ccs/bgn/lab.css">
+
+		
 
 		<title>
 			Gram-- 
@@ -245,8 +252,27 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 					a.testes = document.createElement('b')
 					a.appendChild(a.testes)
 
-					a.probabilidades = document.createElement('p')
-					a.appendChild(a.probabilidades)
+					tabela = document.createElement('table')
+					tabela.classList.add('table')
+					a.probabilidades = document.createElement('tbody')	
+
+					tabela.cols = document.createElement('tr')
+					tabela.cols.prob = document.createElement('th')
+					tabela.cols.prob.appendChild(document.createTextNode('Probabilidade (%)'))
+					tabela.cols.bact = document.createElement('th')
+					tabela.cols.bact.appendChild(document.createTextNode('Bactéria'))
+					
+					
+					a.appendChild(tabela)
+					
+					tabela.cols.appendChild(tabela.cols.prob)
+					tabela.cols.appendChild(tabela.cols.bact)
+					
+					tabela.appendChild(tabela.cols)
+					tabela.appendChild(a.probabilidades)
+
+					
+					
 
 					s = ':'
 					c = 0
@@ -269,9 +295,18 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 						if(Array.isArray(p))
 							p = p[p.length - 1]
 
-						ln = document.createElement('div')
+						ln = document.createElement('tr')
 						ln.style = 'background-color:hsl(' + (360 * ((p/(max_p*6)) + 2/3)) + ',' + (100 * (.2+(.3*p/max_p))) + '%,'+(25*(3+(p==0)))+'%);'
-						ln.innerHTML = r[i].resultados[j].probabilidade + '\t' + r[i].resultados[j].nome
+
+						ln.prob = document.createElement('td')  
+						ln.prob.appendChild(document.createTextNode(r[i].resultados[j].probabilidade))
+						
+						ln.bact = document.createElement('td')   
+						ln.bact.appendChild(document.createTextNode(r[i].resultados[j].nome))
+
+						ln.appendChild(ln.prob)
+						ln.appendChild(ln.bact)
+						 
 						a.probabilidades.appendChild(ln)
 					//	a.probabilidades.appendChild()
 					}
@@ -282,6 +317,7 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 			
 			function entrada () {
 				e = document.createElement('select')
+				e.classList.add('form-control')
 				for(var p = 0; p < op.length; p++) {
 					o = document.createElement('option')
 					o.value = op[p]
@@ -295,6 +331,7 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 			for(c = 0; c < dados.length; c++) {
 				d = document.createElement('div')
 				d.classList.add('teste')
+				d.classList.add('form-group')
 				d.id = c
 
 				d.testes = dados[c].testes
@@ -306,8 +343,13 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 				for(t = 0; t < d.testes.length; t++) {
 					p = document.createElement('p')
 					p.name = d.testes[t]
-					p.appendChild(document.createTextNode(d.testes[t] + '\t'))
+					p.label = document.createElement('label')
+					p.label.for = d.id + '\t' + p.name
+					p.label.name = p.label.for
+					p.label.appendChild(document.createTextNode(p.name))
+					p.appendChild(p.label)
 					i = entrada()					
+					i.id = p.label.for
 					p.appendChild(i)
 					d.campos.appendChild(p)
 					d.entradas[t] = i
@@ -317,6 +359,7 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 				b = document.createElement('input')	
 				b.type = 'submit'
 				b.value = 'Testar!'
+				b.classList.add('form-control')
 				b.onclick = (e, x=d) => testar(x)
 				d.appendChild(b)
 
@@ -343,6 +386,10 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 		<br>
 
 		Última atualização em 
-		19/05/2023
+		05/06/2023
+
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	</body>	
 </html>
