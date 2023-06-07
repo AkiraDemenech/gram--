@@ -1,5 +1,6 @@
 body {
 	background: aquamarine;
+	padding: 1%;
 }
 
 label {
@@ -12,4 +13,5 @@ a {
 
 div.teste {
 	background: #f0f0f0;
+	padding: 2%;
 }
