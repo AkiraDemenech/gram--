@@ -319,6 +319,13 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 
 				
 			}
+
+			function entrada_change_iife (sel) {
+				return function () {
+						sel.style.background = sel.selectedOptions[0].style.background;
+						console.log('change ' + sel.id + ' to ' + sel.selectedOptions[0].value)						
+					}				
+			}
 			
 			function entrada () {
 				e = document.createElement('select')
@@ -331,9 +338,10 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 					if(o.background === undefined)
 						o.background = 'white'
 					o.style = 'background:' + o.background
-					e.appendChild(o)
 					
+					e.appendChild(o)										
 				}
+				e.addEventListener('change', entrada_change_iife(e))
 				return e 
 			}			
 
@@ -356,7 +364,7 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 
 				for(t = 0; t < d.testes.length; t++) {
 					p = document.createElement('p')
-					p.name = d.testes[t]
+					p.name = d.testes[t] + '\t'
 					p.label = document.createElement('label')
 					p.label.for = d.id + '\t' + p.name
 					p.label.name = p.label.for
@@ -402,7 +410,7 @@ function ranquear (bact, testes, max_prob = PORCENTAGEM_MAX, nome = TAG_NOME) {
 		<br>
 
 		Última atualização em 
-		07/06/2023
+		15/08/2023
 	</div>		
 
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
